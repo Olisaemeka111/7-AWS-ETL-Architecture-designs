@@ -1,0 +1,276 @@
+# ETL Pipeline CloudWatch Alerts Configuration
+
+alerts:
+  # Lambda Function Alerts
+  - name: "ETL-Extract-Lambda-ErrorRate"
+    description: "Extract Lambda error rate too high"
+    metric:
+      namespace: "AWS/Lambda"
+      metric_name: "Errors"
+      dimensions:
+        - name: "FunctionName"
+          value: "etl-extract"
+    threshold: 5
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Sum"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+    ok_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-Transform-Lambda-ErrorRate"
+    description: "Transform Lambda error rate too high"
+    metric:
+      namespace: "AWS/Lambda"
+      metric_name: "Errors"
+      dimensions:
+        - name: "FunctionName"
+          value: "etl-transform"
+    threshold: 5
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Sum"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-Load-Lambda-ErrorRate"
+    description: "Load Lambda error rate too high"
+    metric:
+      namespace: "AWS/Lambda"
+      metric_name: "Errors"
+      dimensions:
+        - name: "FunctionName"
+          value: "etl-load"
+    threshold: 5
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Sum"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-Lambda-Duration-High"
+    description: "Lambda execution duration too high"
+    metric:
+      namespace: "AWS/Lambda"
+      metric_name: "Duration"
+      dimensions:
+        - name: "FunctionName"
+          value: "etl-extract"
+    threshold: 300000  # 5 minutes in milliseconds
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Average"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-Lambda-Throttles"
+    description: "Lambda function throttling detected"
+    metric:
+      namespace: "AWS/Lambda"
+      metric_name: "Throttles"
+      dimensions:
+        - name: "FunctionName"
+          value: "etl-extract"
+    threshold: 1
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 1
+    period: 300
+    statistic: "Sum"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  # SQS Queue Alerts
+  - name: "ETL-SQS-QueueDepth-High"
+    description: "SQS queue depth too high"
+    metric:
+      namespace: "AWS/SQS"
+      metric_name: "ApproximateNumberOfVisibleMessages"
+      dimensions:
+        - name: "QueueName"
+          value: "etl-queue"
+    threshold: 100
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Average"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-SQS-DeadLetterQueue-Messages"
+    description: "Messages in dead letter queue"
+    metric:
+      namespace: "AWS/SQS"
+      metric_name: "ApproximateNumberOfVisibleMessages"
+      dimensions:
+        - name: "QueueName"
+          value: "etl-dlq"
+    threshold: 1
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 1
+    period: 300
+    statistic: "Average"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  # S3 Storage Alerts
+  - name: "ETL-S3-Storage-High"
+    description: "S3 storage usage too high"
+    metric:
+      namespace: "AWS/S3"
+      metric_name: "BucketSizeBytes"
+      dimensions:
+        - name: "BucketName"
+          value: "etl-staging-bucket"
+        - name: "StorageType"
+          value: "StandardStorage"
+    threshold: 1073741824000  # 1TB in bytes
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 86400  # Daily
+    statistic: "Average"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  # Redshift Alerts
+  - name: "ETL-Redshift-CPU-High"
+    description: "Redshift CPU utilization too high"
+    metric:
+      namespace: "AWS/Redshift"
+      metric_name: "CPUUtilization"
+      dimensions:
+        - name: "ClusterIdentifier"
+          value: "etl-warehouse"
+    threshold: 80
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Average"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-Redshift-Connections-High"
+    description: "Redshift database connections too high"
+    metric:
+      namespace: "AWS/Redshift"
+      metric_name: "DatabaseConnections"
+      dimensions:
+        - name: "ClusterIdentifier"
+          value: "etl-warehouse"
+    threshold: 80
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Average"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  # Custom ETL Pipeline Alerts
+  - name: "ETL-Pipeline-ProcessingTime-High"
+    description: "ETL pipeline processing time too high"
+    metric:
+      namespace: "ETL/Pipeline"
+      metric_name: "ProcessingTime"
+      dimensions:
+        - name: "Function"
+          value: "extract"
+    threshold: 600000  # 10 minutes in milliseconds
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 2
+    period: 300
+    statistic: "Average"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-Pipeline-DataQuality-Failed"
+    description: "Data quality checks failed"
+    metric:
+      namespace: "ETL/Pipeline"
+      metric_name: "DataQualityFailures"
+    threshold: 1
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 1
+    period: 300
+    statistic: "Sum"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  - name: "ETL-Pipeline-NoData-Processed"
+    description: "No data processed in the last hour"
+    metric:
+      namespace: "ETL/Pipeline"
+      metric_name: "RecordsProcessed"
+      dimensions:
+        - name: "Function"
+          value: "extract"
+    threshold: 1
+    comparison_operator: "LessThanThreshold"
+    evaluation_periods: 2
+    period: 3600  # 1 hour
+    statistic: "Sum"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+  # Cost Alerts
+  - name: "ETL-Monthly-Cost-High"
+    description: "Monthly ETL costs exceed budget"
+    metric:
+      namespace: "AWS/Billing"
+      metric_name: "EstimatedCharges"
+      dimensions:
+        - name: "Currency"
+          value: "USD"
+        - name: "ServiceName"
+          value: "AmazonEC2"
+    threshold: 200
+    comparison_operator: "GreaterThanThreshold"
+    evaluation_periods: 1
+    period: 86400  # Daily
+    statistic: "Maximum"
+    alarm_actions:
+      - "arn:aws:sns:us-east-1:123456789012:etl-alerts"
+
+# SNS Topic Configuration
+sns_topics:
+  - name: "etl-alerts"
+    display_name: "ETL Pipeline Alerts"
+    description: "Alerts for ETL pipeline issues"
+    subscribers:
+      - email: "admin@company.com"
+      - email: "devops@company.com"
+      - sms: "+1234567890"
+
+# CloudWatch Log Groups
+log_groups:
+  - name: "/aws/lambda/etl-extract"
+    retention_days: 14
+  - name: "/aws/lambda/etl-transform"
+    retention_days: 14
+  - name: "/aws/lambda/etl-load"
+    retention_days: 14
+  - name: "/aws/events/etl-pipeline"
+    retention_days: 30
+
+# Custom Metrics Configuration
+custom_metrics:
+  - namespace: "ETL/Pipeline"
+    metrics:
+      - name: "RecordsProcessed"
+        description: "Number of records processed"
+        unit: "Count"
+      - name: "ProcessingTime"
+        description: "Processing time in milliseconds"
+        unit: "Milliseconds"
+      - name: "DataVolume"
+        description: "Data volume processed in GB"
+        unit: "Gigabytes"
+      - name: "DataQualityFailures"
+        description: "Number of data quality failures"
+        unit: "Count"
+      - name: "PipelineSuccess"
+        description: "Pipeline execution success (1) or failure (0)"
+        unit: "Count"

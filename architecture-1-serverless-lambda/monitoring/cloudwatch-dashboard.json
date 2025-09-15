@@ -1,0 +1,196 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/Lambda", "Invocations", "FunctionName", "etl-extract" ],
+          [ ".", "Errors", ".", "." ],
+          [ ".", "Duration", ".", "." ],
+          [ ".", "Throttles", ".", "." ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Extract Lambda Metrics",
+        "period": 300,
+        "stat": "Sum"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/Lambda", "Invocations", "FunctionName", "etl-transform" ],
+          [ ".", "Errors", ".", "." ],
+          [ ".", "Duration", ".", "." ],
+          [ ".", "Throttles", ".", "." ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Transform Lambda Metrics",
+        "period": 300,
+        "stat": "Sum"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/Lambda", "Invocations", "FunctionName", "etl-load" ],
+          [ ".", "Errors", ".", "." ],
+          [ ".", "Duration", ".", "." ],
+          [ ".", "Throttles", ".", "." ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Load Lambda Metrics",
+        "period": 300,
+        "stat": "Sum"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 6,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/SQS", "ApproximateNumberOfVisibleMessages", "QueueName", "etl-queue" ],
+          [ ".", "ApproximateNumberOfMessagesNotVisible", ".", "." ],
+          [ ".", "NumberOfMessagesSent", ".", "." ],
+          [ ".", "NumberOfMessagesReceived", ".", "." ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "SQS Queue Metrics",
+        "period": 300,
+        "stat": "Average"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 12,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/S3", "BucketSizeBytes", "BucketName", "etl-staging-bucket", "StorageType", "StandardStorage" ],
+          [ ".", "NumberOfObjects", ".", ".", ".", "AllStorageTypes" ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "S3 Storage Metrics",
+        "period": 86400,
+        "stat": "Average"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 12,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "AWS/Redshift", "DatabaseConnections", "ClusterIdentifier", "etl-warehouse" ],
+          [ ".", "CPUUtilization", ".", "." ],
+          [ ".", "NetworkReceiveThroughput", ".", "." ],
+          [ ".", "NetworkTransmitThroughput", ".", "." ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Redshift Cluster Metrics",
+        "period": 300,
+        "stat": "Average"
+      }
+    },
+    {
+      "type": "log",
+      "x": 0,
+      "y": 18,
+      "width": 24,
+      "height": 6,
+      "properties": {
+        "query": "SOURCE '/aws/lambda/etl-extract' | fields @timestamp, @message\n| filter @message like /ERROR/\n| sort @timestamp desc\n| limit 20",
+        "region": "us-east-1",
+        "title": "Recent Lambda Errors",
+        "view": "table"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 24,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "ETL/Pipeline", "RecordsProcessed", "Function", "extract" ],
+          [ ".", "RecordsProcessed", "Function", "transform" ],
+          [ ".", "RecordsProcessed", "Function", "load" ]
+        ],
+        "view": "singleValue",
+        "region": "us-east-1",
+        "title": "Records Processed Today",
+        "period": 86400,
+        "stat": "Sum"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 24,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "ETL/Pipeline", "ProcessingTime", "Function", "extract" ],
+          [ ".", "ProcessingTime", "Function", "transform" ],
+          [ ".", "ProcessingTime", "Function", "load" ]
+        ],
+        "view": "singleValue",
+        "region": "us-east-1",
+        "title": "Average Processing Time (ms)",
+        "period": 3600,
+        "stat": "Average"
+      }
+    },
+    {
+      "type": "metric",
+      "x": 16,
+      "y": 24,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "ETL/Pipeline", "DataVolume", "Unit", "GB" ]
+        ],
+        "view": "singleValue",
+        "region": "us-east-1",
+        "title": "Data Volume Processed (GB)",
+        "period": 86400,
+        "stat": "Sum"
+      }
+    }
+  ]
+}
