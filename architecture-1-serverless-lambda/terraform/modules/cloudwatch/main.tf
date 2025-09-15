@@ -96,8 +96,6 @@ resource "aws_cloudwatch_dashboard" "etl_dashboard" {
       }
     ]
   })
-  
-  tags = var.tags
 }
 
 # CloudWatch Alarms
@@ -118,8 +116,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_errors" {
   dimensions = {
     FunctionName = each.key
   }
-  
-  tags = var.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
@@ -139,8 +135,6 @@ resource "aws_cloudwatch_metric_alarm" "lambda_duration" {
   dimensions = {
     FunctionName = each.key
   }
-  
-  tags = var.tags
 }
 
 resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
@@ -158,8 +152,6 @@ resource "aws_cloudwatch_metric_alarm" "sqs_queue_depth" {
   dimensions = {
     QueueName = var.sqs_queue_name
   }
-  
-  tags = var.tags
 }
 
 # SNS Topic for Alerts

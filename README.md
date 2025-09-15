@@ -60,54 +60,54 @@ A fully managed ETL pipeline using AWS Glue for data processing with built-in da
 - **Deployment**: `cd architecture-2-glue-pipeline/terraform && terraform apply`
 
 ### Architecture 3: Kinesis Streaming
-**Status: 🚧 In Development**
+**Status: ✅ Complete**
 
 Real-time streaming ETL pipeline using Amazon Kinesis for data ingestion and processing.
 
 - **Components**: Kinesis Data Streams, Kinesis Analytics, Kinesis Data Firehose
 - **Best for**: Real-time analytics, IoT data processing, live dashboards
 - **Cost**: Pay-per-shard and data processed
-- **Deployment**: Coming soon
+- **Deployment**: `cd architecture-3-kinesis-streaming/terraform && terraform apply`
 
 ### Architecture 4: EMR Batch
-**Status: 🚧 In Development**
+**Status: ✅ Complete**
 
 Big data ETL pipeline using Amazon EMR for large-scale data processing with Hadoop/Spark.
 
 - **Components**: EMR, S3, Spark, Hadoop
 - **Best for**: Very large datasets, complex machine learning pipelines
 - **Cost**: EC2 instance pricing
-- **Deployment**: Coming soon
+- **Deployment**: `cd architecture-4-emr-batch/terraform && terraform apply`
 
 ### Architecture 5: RDS Database
-**Status: 🚧 In Development**
+**Status: ✅ Complete**
 
 Database-centric ETL pipeline using Amazon RDS/Aurora with stored procedures for transformations.
 
-- **Components**: RDS/Aurora, S3, Data Pipeline
+- **Components**: RDS/Aurora, S3, Data Pipeline, AWS DMS
 - **Best for**: SQL-heavy transformations, transactional data processing
 - **Cost**: RDS instance pricing
-- **Deployment**: Coming soon
+- **Deployment**: `cd architecture-5-rds-database/terraform && terraform apply`
 
 ### Architecture 6: Containerized ECS
-**Status: 🚧 In Development**
+**Status: ✅ Complete**
 
 Containerized ETL pipeline using Amazon ECS for custom business logic and multi-language processing.
 
-- **Components**: ECS, ECR, S3, EFS
+- **Components**: ECS, ECR, S3, EFS, Step Functions
 - **Best for**: Complex custom logic, microservices architecture
 - **Cost**: ECS task pricing
-- **Deployment**: Coming soon
+- **Deployment**: `cd architecture-6-containers-ecs/terraform && terraform apply`
 
 ### Architecture 7: Step Functions
-**Status: 🚧 In Development**
+**Status: ✅ Complete**
 
 Orchestrated ETL pipeline using AWS Step Functions to coordinate complex multi-step workflows.
 
-- **Components**: Step Functions, Lambda, Glue, EMR
+- **Components**: Step Functions, Lambda, Glue, EMR, SNS
 - **Best for**: Complex workflows, mixed processing requirements
 - **Cost**: State transition pricing
-- **Deployment**: Coming soon
+- **Deployment**: `cd architecture-7-step-functions/terraform && terraform apply`
 
 ## 🛠️ Technology Stack
 

@@ -70,9 +70,10 @@ module "redshift" {
   
   environment = var.environment
   project_name = var.project_name
-  vpc_id = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnet_ids
   security_group_ids = [module.vpc.redshift_security_group_id]
+  logs_bucket_name = module.s3.logs_bucket_name
+  staging_bucket_name = module.s3.staging_bucket_name
   
   tags = local.common_tags
 }
@@ -93,7 +94,6 @@ module "lambda" {
   
   environment = var.environment
   project_name = var.project_name
-  vpc_id = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnet_ids
   security_group_ids = [module.vpc.lambda_security_group_id]
   
@@ -101,8 +101,11 @@ module "lambda" {
   source_rds_endpoint = module.rds.endpoint
   target_redshift_endpoint = module.redshift.endpoint
   staging_bucket_name = module.s3.staging_bucket_name
+  staging_bucket_arn = module.s3.staging_bucket_arn
   processing_queue_url = module.sqs.processing_queue_url
+  processing_queue_arn = module.sqs.processing_queue_arn
   dlq_url = module.sqs.dlq_url
+  dlq_arn = module.sqs.dlq_arn
   
   tags = local.common_tags
 }
@@ -127,11 +130,16 @@ module "iam" {
   project_name = var.project_name
   
   # Resource ARNs
-  staging_bucket_arn = module.s3.staging_bucket_arn
-  source_rds_arn = module.rds.arn
-  target_redshift_arn = module.redshift.arn
-  processing_queue_arn = module.sqs.processing_queue_arn
-  dlq_arn = module.sqs.dlq_arn
+  s3_bucket_arns = [
+    module.s3.staging_bucket_arn,
+    module.s3.logs_bucket_arn
+  ]
+  rds_db_arns = [module.rds.arn]
+  redshift_cluster_arns = [module.redshift.arn]
+  sqs_queue_arns = [
+    module.sqs.processing_queue_arn,
+    module.sqs.dlq_arn
+  ]
   
   tags = local.common_tags
 }

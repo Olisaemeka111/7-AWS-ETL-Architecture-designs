@@ -197,9 +197,7 @@ output "estimated_monthly_cost" {
     s3_storage = "~$2.30 USD per 100GB"
     redshift   = var.enable_redshift ? "~$180 USD per month (dc2.large)" : "Not enabled"
     airflow    = var.enable_airflow ? "~$100-200 USD per month" : "Not enabled"
-    total_estimate = var.enable_redshift && var.enable_airflow ? "~$700-1200 USD per month" : 
-                     var.enable_redshift ? "~$600-1000 USD per month" : 
-                     var.enable_airflow ? "~$500-900 USD per month" : "~$400-800 USD per month"
+    total_estimate = var.enable_redshift && var.enable_airflow ? "~$700-1200 USD per month" : var.enable_redshift ? "~$600-1000 USD per month" : var.enable_airflow ? "~$500-900 USD per month" : "~$400-800 USD per month"
   }
 }
 

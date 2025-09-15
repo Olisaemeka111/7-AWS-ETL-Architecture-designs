@@ -82,11 +82,6 @@ resource "aws_redshift_cluster" "main" {
 
   # Monitoring
   cluster_parameter_group_name = aws_redshift_parameter_group.main.name
-  logging {
-    enable = true
-    bucket_name = var.logs_bucket_name
-    s3_key_prefix = "redshift-logs/"
-  }
 
   # Deletion protection
   skip_final_snapshot = true

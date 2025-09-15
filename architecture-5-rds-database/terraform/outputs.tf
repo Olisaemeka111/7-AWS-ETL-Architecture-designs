@@ -309,9 +309,7 @@ output "estimated_monthly_cost" {
     }
     s3_storage = "~$2.30 USD per 100GB"
     redshift   = var.enable_redshift ? "~$180 USD per month (dc2.large)" : "Not enabled"
-    total_estimate = var.enable_aurora && var.enable_redshift ? "~$400-800 USD per month" : 
-                     var.enable_aurora ? "~$200-500 USD per month" : 
-                     var.enable_redshift ? "~$300-600 USD per month" : "~$100-300 USD per month"
+    total_estimate = var.enable_aurora && var.enable_redshift ? "~$400-800 USD per month" : var.enable_aurora ? "~$200-500 USD per month" : var.enable_redshift ? "~$300-600 USD per month" : "~$100-300 USD per month"
   }
 }
 

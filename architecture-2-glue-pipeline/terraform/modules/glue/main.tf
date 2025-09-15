@@ -16,7 +16,7 @@ resource "aws_glue_catalog_database" "databases" {
 
 # Glue Connection for external data sources
 resource "aws_glue_connection" "external_connections" {
-  for_each = var.source_databases
+  for_each = { for i, db in var.source_databases : db.name => db }
   
   connection_properties = {
     JDBC_CONNECTION_URL = "jdbc:${each.value.type}://${each.value.host}:${each.value.port}/${each.value.database}"
@@ -157,8 +157,6 @@ resource "aws_glue_security_configuration" "main" {
       kms_key_arn        = var.kms_key_arn
     }
   }
-  
-  tags = var.tags
 }
 
 # Data sources
